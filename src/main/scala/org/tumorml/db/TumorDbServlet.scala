@@ -9,11 +9,9 @@ class TumorDbServlet extends TumorDbStack {
     contentType="application/xml"
   }
 
-  get("/download/:lsid") {
-    // download TumorML document identified by LSID
+  get("/download/:id") {
+    // download TumorML document identified by an ID
     contentType="application/xml"
-    // echo lsid back
-    <lsid>{params({"lsid"})}</lsid>
   }
 
   get("/metrics") {
