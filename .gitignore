@@ -1,3 +1,9 @@
+# Intellij IDEA
+*.iml
+*.ipr
+*.iws
+.idea/
+
 *.class
 *.log
 
