@@ -7,8 +7,11 @@ import scala.xml.{XML, Elem}
 
 class TumorDbServlet extends TumorDbStack {
 
-  get("/search/:query") {
+  before() {
     contentType="application/xml"
+  }
+
+  get("/search/:query") {
     val session = new BaseXClient("localhost", 1984, "admin", "admin")
     val queryDocsByTitle = "db:open('tumorml')//tumorml[./header/title contains text '" + params({"query"}) +
       "' using fuzzy]"
@@ -24,12 +27,10 @@ class TumorDbServlet extends TumorDbStack {
 
   get("/download/:id") {
     // download TumorML document identified by an ID
-    contentType="application/xml"
   }
 
   get("/metrics") {
     // get DB metrics
-    contentType="application/xml"
   }
   
 }
