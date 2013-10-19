@@ -1,10 +1,12 @@
-package org.tumorml.db
+package org.tumorml.db.api
 
 import org.basex.client.api.BaseXClient
 import scala.collection.mutable.ListBuffer
 import scala.xml.{XML, Elem}
+import org.tumorml.db.TumorDbStack
 
 /**
+ * TumorML DB API service servlet.
  *
  * Copyright 2013 David Johnson.
  *
@@ -26,23 +28,14 @@ import scala.xml.{XML, Elem}
  * under the License.
  */
 
-class TumorDbServlet extends TumorDbStack {
+class TumorDbApiService extends TumorDbStack {
 
   before() {
-    contentType="text/html"
-  }
-
-  // search - looks in code lists, enumerated items and external code IDs
-  // search across DB and return TumorML documents matching query
-  get ("/search") {
-    if (params.get("q")==None)
-      redirect("/tumorml")
-    else
-      redirect("/tumorml/search/" + params({"q"}))
-  }
-
-  get("/search/:query") {
     contentType="application/xml"
+  }
+
+  // search across DB and return TumorML documents matching query
+  get("/search/:query") {
     val session = new BaseXClient("localhost", 1984, "admin", "admin")
     val queryDocsByTitle = "db:open('tumorml')//tumorml[./header/title contains text '" + params({"query"}) +
       "' using fuzzy]"
@@ -56,24 +49,20 @@ class TumorDbServlet extends TumorDbStack {
     output
   }
 
-
-
-  // if landed at root, redirect to user search page
-  get("/") {
-    <html>
-      <head>
-        <title>TumorML DB Seach</title>
-        <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
-        <link rel="stylesheet" type="text/css" href="../css/style.css" />
-      </head>
-      <body>
-        <div align="center">
-          <h1>TumorML Search</h1>
-          <form action="/tumorml/search" method="GET">
-            <input type="text" class="tftextinput" name="q" /><input type="submit" value="Search terms" class="tfbutton" />
-          </form>
-        </div>
-      </body>
-    </html>
+  get("/download/:id") {
+    // download single TumorML document identified by an ID
+    val session = new BaseXClient("localhost", 1984, "admin", "admin")
+    val queryDocsByTitle = "db:open('tumorml')//tumorml[data(./@id) = '" + params({"id"}) + "']"
+    val docsByTitleResults = session.query(queryDocsByTitle)
+    val docsByTitleResultsList = new ListBuffer[Elem]
+    while (docsByTitleResults.more()) docsByTitleResultsList += XML.loadString(docsByTitleResults.next())
+    docsByTitleResults.close()
+    val output = {for (doc <- docsByTitleResultsList) yield doc} // should only be one document
+    output
   }
+
+  get("/metrics") {
+    // get DB metrics
+  }
+  
 }
