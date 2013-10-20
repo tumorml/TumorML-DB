@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<tumorml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.tumor-project.eu/tumorml/1.0" id="egfr_erk_pathway">
+<tumorml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.tumorml.org/tumorml/1.1" xsi:schemaLocation="http://raw.github.com/tumorml/TumorML-schema/master tumorml.xsd" id="egfr_erk_pathway">
     <header>
         <title>EGFR-ERK Pathway</title>
         <description>
@@ -37,7 +37,7 @@
              <in name="egf" optional="0">
                  <value type="double" />
              </in>
-             <out name="cell cycle time" optional="0">
+             <out name="cell_cycle_time" optional="0">
                  <value type="double" />
              </out>
              <out name="PLC_g" optional="0">
