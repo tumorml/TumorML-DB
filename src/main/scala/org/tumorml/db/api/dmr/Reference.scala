@@ -1,10 +1,7 @@
-import org.tumorml.db._
-import org.scalatra._
-import javax.servlet.ServletContext
-import org.tumorml.db.api.TumorMLDataService
+package org.tumorml.db.api.dmr
 
 /**
- * Scalatra bootstrapper for servlets
+ * Domain class for DMR.
  *
  * Copyright 2013 David Johnson.
  *
@@ -25,10 +22,10 @@ import org.tumorml.db.api.TumorMLDataService
  * specific language governing permissions and limitations
  * under the License.
  */
-
-class ScalatraBootstrap extends LifeCycle {
-  override def init(context: ServletContext) {
-    context.mount(new TumorMLDataService, "/tumorml/api/*")
-    context.mount(new TumorMLDbServlet, "/tumorml/*")
-  }
+abstract class Reference {
+  var id: String = ""
+  var title: String = ""
+  var description: String = ""
+  var source: String = ""
+  var comment: String = ""
 }

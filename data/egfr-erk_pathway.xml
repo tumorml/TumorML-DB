@@ -44,7 +44,7 @@
                  <value type="double" />
              </out>
         </parameters>
-        <implementation id="urn:lsid:cvit.org:cmef:0.919920521935164">
+        <implementation id="urn:miriam:cvit.org:cmef:0.919920521935164">
              <title>
                  EGFR-ODE Model for EC revision #3 (6/25/2012) from Massachusetts General Hospital. Calculates Cell Cycle Time for EGF concentration. (Updated for command line parameters)
              </title>

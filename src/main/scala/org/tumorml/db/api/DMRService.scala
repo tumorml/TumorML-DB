@@ -1,10 +1,10 @@
-import org.tumorml.db._
-import org.scalatra._
-import javax.servlet.ServletContext
-import org.tumorml.db.api.TumorMLDataService
+package org.tumorml.db.api
+
+import org.tumorml.db.TumorMLDbStack
 
 /**
- * Scalatra bootstrapper for servlets
+ * DMR Service servlet. Implements CViT/caBIG DMR API as documented in
+ * MGH_DMR-UserGuide-1_0_0.doc
  *
  * Copyright 2013 David Johnson.
  *
@@ -26,9 +26,38 @@ import org.tumorml.db.api.TumorMLDataService
  * under the License.
  */
 
-class ScalatraBootstrap extends LifeCycle {
-  override def init(context: ServletContext) {
-    context.mount(new TumorMLDataService, "/tumorml/api/*")
-    context.mount(new TumorMLDbServlet, "/tumorml/*")
+class DMRService extends TumorMLDbStack {
+
+  before() {
+    contentType = "application/xml"
   }
+
+  get("/addEntry") {
+
+  }
+
+  get("/addDataToEntry") {
+
+  }
+
+  get("/addReferenceToEntry") {
+
+  }
+
+  get("/updateEntry") {
+
+  }
+
+  get("/updateData") {
+
+  }
+
+  get("/updateReference") {
+
+  }
+
+  get("/query") {
+
+  }
+
 }

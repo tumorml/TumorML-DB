@@ -26,7 +26,7 @@ import scala.xml.{XML, Elem}
  * under the License.
  */
 
-class TumorDbServlet extends TumorDbStack {
+class TumorMLDbServlet extends TumorMLDbStack {
 
   before() {
     contentType="text/html"
@@ -47,28 +47,61 @@ class TumorDbServlet extends TumorDbStack {
     val queryDocsByTitle = "db:open('tumorml')//tumorml[./header/title contains text '" + params({"query"}) +
       "' using fuzzy]"
     val docsByTitleResults = session.query(queryDocsByTitle)
-    val docsByTitleResultsList = new ListBuffer[Elem]
-    while (docsByTitleResults.more()) docsByTitleResultsList += XML.loadString(docsByTitleResults.next())
+    val resultsList = new ListBuffer[Elem]
+    while (docsByTitleResults.more()) resultsList += XML.loadString(docsByTitleResults.next())
     docsByTitleResults.close()
-    val output = <success>
-      {for (doc <- docsByTitleResultsList) yield doc}
-    </success>
+
+    // generate the output XML from searchResultsList
+    var output =
+      <html>
+        <head>
+          <title>{params({"query"})} - TumorML Database Search</title>
+          <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
+          <link rel="stylesheet" type="text/css" href="../css/style.css" />
+        </head>
+        <body class="etstextresults">
+          <form action="/search" method="GET">
+            <a href="/search/"><img src="../images/etriks-logo-small.png" width="50" height="50" /></a><input type="text" class="etstextinput" name="q" value={"\"" + params({"query"}) + "\""} onclick="this.value='';" /><input type="submit" value="Search terms" class="etsbutton" />
+          </form>
+          <p>You searched for <strong>{params({"query"})}</strong></p>
+          <p>No results.</p>
+        </body>
+      </html>
+
+    if (resultsList.size>0) {
+      output =
+        <html>
+          <head>
+            <title>{params({"query"})} - TumorML Database Search</title>
+            <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
+            <link rel="stylesheet" type="text/css" href="../css/style.css" />
+          </head>
+          <body class="etstextresults">
+            <form action="/search" method="GET">
+              <a href="/search/"><img src="../images/tumorml-logo-small.png" width="50" height="50" /></a><input type="text" class="etstextinput" name="q" value={"\"" + params({"query"}) + "\""} onclick="this.value='';" /><input type="submit" value="Search terms" class="etsbutton" />
+            </form>
+            <p>You searched for <strong>{params({"query"})}</strong></p>
+            <ol>
+              {for (searchResult <- resultsList.distinct) yield searchResult}
+            </ol>
+          </body>
+        </html>
+    }
+    session.close()
     output
   }
-
-
 
   // if landed at root, redirect to user search page
   get("/") {
     <html>
       <head>
-        <title>TumorML DB Seach</title>
+        <title>TumorML Database Search</title>
         <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
         <link rel="stylesheet" type="text/css" href="../css/style.css" />
       </head>
       <body>
         <div align="center">
-          <h1>TumorML Search</h1>
+          <img src="../images/tumorml-banner.png" />
           <form action="/tumorml/search" method="GET">
             <input type="text" class="tftextinput" name="q" /><input type="submit" value="Search terms" class="tfbutton" />
           </form>

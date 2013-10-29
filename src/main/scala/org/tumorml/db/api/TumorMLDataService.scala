@@ -3,7 +3,7 @@ package org.tumorml.db.api
 import org.basex.client.api.BaseXClient
 import scala.collection.mutable.ListBuffer
 import scala.xml.{XML, Elem}
-import org.tumorml.db.TumorDbStack
+import org.tumorml.db.TumorMLDbStack
 
 /**
  * TumorML DB API service servlet.
@@ -28,7 +28,7 @@ import org.tumorml.db.TumorDbStack
  * under the License.
  */
 
-class TumorDbApiService extends TumorDbStack {
+class TumorMLDataService extends TumorMLDbStack {
 
   before() {
     contentType="application/xml"
