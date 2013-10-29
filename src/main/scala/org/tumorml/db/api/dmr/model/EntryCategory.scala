@@ -1,4 +1,4 @@
-package org.tumorml.db.api.dmr
+package org.tumorml.db.api.dmr.model
 
 /**
  * Domain class for DMR.
@@ -22,4 +22,7 @@ package org.tumorml.db.api.dmr
  * specific language governing permissions and limitations
  * under the License.
  */
-class Parameters extends DataClassification
+abstract class EntryCategory {
+  val id: String
+  val name: String
+}

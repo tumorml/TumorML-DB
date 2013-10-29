@@ -1,10 +1,9 @@
-package org.tumorml.db.api
+package org.tumorml.db.api.dmr.model
 
-import org.tumorml.db.TumorMLDbStack
+import org.tumorml.db.api.dmr.model.DataClassification
 
 /**
- * DMR Service servlet. Implements CViT/caBIG DMR API as documented in
- * MGH_DMR-UserGuide-1_0_0.doc
+ * Domain class for DMR.
  *
  * Copyright 2013 David Johnson.
  *
@@ -25,39 +24,4 @@ import org.tumorml.db.TumorMLDbStack
  * specific language governing permissions and limitations
  * under the License.
  */
-
-class DMRService extends TumorMLDbStack {
-
-  before() {
-    contentType = "application/xml"
-  }
-
-  get("/addEntry") {
-
-  }
-
-  get("/addDataToEntry") {
-
-  }
-
-  get("/addReferenceToEntry") {
-
-  }
-
-  get("/updateEntry") {
-
-  }
-
-  get("/updateData") {
-
-  }
-
-  get("/updateReference") {
-
-  }
-
-  get("/query") {
-
-  }
-
-}
+class ExperimentalData extends DataClassification

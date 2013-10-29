@@ -1,4 +1,4 @@
-package org.tumorml.db.api.dmr
+package org.tumorml.db.api.dmr.model
 
 /**
  * Domain class for DMR.
@@ -22,7 +22,10 @@ package org.tumorml.db.api.dmr
  * specific language governing permissions and limitations
  * under the License.
  */
-abstract class EntryCategory {
-  val id: String
-  val name: String
+abstract class Reference {
+  var id: String = ""
+  var title: String = ""
+  var description: String = ""
+  var source: String = ""
+  var comment: String = ""
 }

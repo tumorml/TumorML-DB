@@ -1,4 +1,4 @@
-package org.tumorml.db.api.dmr
+package org.tumorml.db.api.dmr.model
 
 /**
  * Created with IntelliJ IDEA.

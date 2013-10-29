@@ -1,4 +1,6 @@
-package org.tumorml.db.api.dmr
+package org.tumorml.db.api.dmr.model
+
+import org.tumorml.db.api.dmr.model.Reference
 
 /**
  * Domain class for DMR.
@@ -22,4 +24,4 @@ package org.tumorml.db.api.dmr
  * specific language governing permissions and limitations
  * under the License.
  */
-class SourceCode extends DataClassification
+class Book extends Reference
