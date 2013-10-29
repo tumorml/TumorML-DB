@@ -42,7 +42,6 @@ class TumorMLDbServlet extends TumorMLDbStack {
   }
 
   get("/search/:query") {
-    contentType="application/xml"
     val session = new BaseXClient("localhost", 1984, "admin", "admin")
     val queryDocsByTitle = "db:open('tumorml')//tumorml[./header/title contains text '" + params({"query"}) +
       "' using fuzzy]"
@@ -57,11 +56,11 @@ class TumorMLDbServlet extends TumorMLDbStack {
         <head>
           <title>{params({"query"})} - TumorML Database Search</title>
           <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
-          <link rel="stylesheet" type="text/css" href="../css/style.css" />
+          <link rel="stylesheet" type="text/css" href="../../css/style.css" />
         </head>
-        <body class="etstextresults">
+        <body class="tftextresults">
           <form action="/search" method="GET">
-            <a href="/search/"><img src="../images/etriks-logo-small.png" width="50" height="50" /></a><input type="text" class="etstextinput" name="q" value={"\"" + params({"query"}) + "\""} onclick="this.value='';" /><input type="submit" value="Search terms" class="etsbutton" />
+            <a href="/search/"><img src="../../images/tumorml-logo-small.png" width="50" height="50" /></a><input type="text" class="tftextinput" name="q" value={"\"" + params({"query"}) + "\""} onclick="this.value='';" /><input type="submit" value="Search models" class="tfbutton" />
           </form>
           <p>You searched for <strong>{params({"query"})}</strong></p>
           <p>No results.</p>
@@ -74,11 +73,11 @@ class TumorMLDbServlet extends TumorMLDbStack {
           <head>
             <title>{params({"query"})} - TumorML Database Search</title>
             <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
-            <link rel="stylesheet" type="text/css" href="../css/style.css" />
+            <link rel="stylesheet" type="text/css" href="../../css/style.css" />
           </head>
-          <body class="etstextresults">
+          <body class="tftextresults">
             <form action="/search" method="GET">
-              <a href="/search/"><img src="../images/tumorml-logo-small.png" width="50" height="50" /></a><input type="text" class="etstextinput" name="q" value={"\"" + params({"query"}) + "\""} onclick="this.value='';" /><input type="submit" value="Search terms" class="etsbutton" />
+              <a href="/search/"><img src="../../images/tumorml-logo-small.png" width="50" height="50" /></a><input type="text" class="tftextinput" name="q" value={"\"" + params({"query"}) + "\""} onclick="this.value='';" /><input type="submit" value="Search models" class="tfbutton" />
             </form>
             <p>You searched for <strong>{params({"query"})}</strong></p>
             <ol>
@@ -103,7 +102,7 @@ class TumorMLDbServlet extends TumorMLDbStack {
         <div align="center">
           <img src="../images/tumorml-banner.png" />
           <form action="/tumorml/search" method="GET">
-            <input type="text" class="tftextinput" name="q" /><input type="submit" value="Search terms" class="tfbutton" />
+            <input type="text" class="tftextinput" name="q" /><input type="submit" value="Search models" class="tfbutton" />
           </form>
         </div>
       </body>
