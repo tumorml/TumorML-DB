@@ -3,6 +3,12 @@ package org.tumorml.db
 import org.basex.client.api.BaseXClient
 import scala.collection.mutable.ListBuffer
 import scala.xml.{XML, Elem}
+import javax.xml.parsers._
+import javax.xml.transform._
+import javax.xml.transform.dom._
+import javax.xml.transform.stream._
+import java.io._
+import java.net.URL
 
 /**
  *
@@ -32,7 +38,6 @@ class TumorMLDbServlet extends TumorMLDbStack {
     contentType="text/html"
   }
 
-  // search - looks in code lists, enumerated items and external code IDs
   // search across DB and return TumorML documents matching query
   get ("/search") {
     if (params.get("q")==None)
@@ -41,42 +46,26 @@ class TumorMLDbServlet extends TumorMLDbStack {
       redirect("/tumorml/search/" + params({"q"}))
   }
 
+  // search across DB and return TumorML documents matching query
   get("/search/:query") {
     val session = new BaseXClient("localhost", 1984, "admin", "admin")
-//    val queryDocsByTitle = "db:open('tumorml')//tumorml[./header/title contains text '" + params({"query"}) +
-//      "' using fuzzy]"
-    val queryDocsByTitle = "for $model in db:open('tumorml')//tumorml where $model/header/title contains text '" +
-      params({"query"}) + "' using fuzzy " +
-      "let $title := $model/header/title/text() " +
-      "let $creator := $model/header/creator/person/fullname/text() " +
-      "let $publisher := $model/header/publisher/person/fullname/text() " +
-      "let $datepublished := $model/header/date/text() " +
-      "let $math := $model/header/math/text() " +
-      "let $biocomplexityDirection := $model/header/biocomplexityDirection/text() " +
-      "let $cancer := $model/header/cancer/text() " +
-      "let $materialization := $model/header/materialization/text() " +
-      "let $homogeneity := $model/header/homogeneity/text() " +
-      "let $imageBasedDetectability := $model/header/imageBasedDetectability/text() " +
-      "let $freeGrowth := $model/header/freeGrowth/text() " +
-      "let $treatmentIncluded := $model/header/treatmentIncluded/text() " +
-      "return <li><article>" +
-        "<h1>Title: {$title}</h1>" +
-        "<p>Creator: {$creator}</p>" +
-        "<p>Publisher: {$publisher}</p>" +
-        "<p>Date published: {$datepublished}</p>" +
-        "<p>Math type: {$math}</p>" +
-        "<p>Biocomplexity direction: {$biocomplexityDirection}</p>" +
-        "<p>Cancer simulated: {$cancer}</p>" +
-        "<p>Materialization: {$materialization}</p>" +
-        "<p>Tumor homogeneity: {$homogeneity}</p>" +
-        "<p>Image-based detectability: {$imageBasedDetectability}</p>" +
-        "<p>Free growth simulated?: {$freeGrowth}</p>" +
-        "<p>Treatment included: {$treatmentIncluded}</p>" +
-        "</article></li>"
+    val queryDocsByTitle = "db:open('tumorml')//tumorml[./header/title contains text '" + params({"query"}) +
+      "' using fuzzy]"
     val docsByTitleResults = session.query(queryDocsByTitle)
     val resultsList = new ListBuffer[Elem]
-    while (docsByTitleResults.more()) resultsList += XML.loadString(docsByTitleResults.next())
-    docsByTitleResults.close()
+
+    // transform docs into HTML to render using stylesheet
+    val factory = TransformerFactory.newInstance()
+    val stylesheet = getClass.getClassLoader.getResource("tumorDocToHtml.xsl")
+    val template = factory.newTemplates(new StreamSource(new FileInputStream(stylesheet.getPath)))
+    val xformer = template.newTransformer()
+    while (docsByTitleResults.more()) {
+      val source = new StreamSource(new ByteArrayInputStream(docsByTitleResults.next.getBytes))
+      val out = new ByteArrayOutputStream()
+      val result = new StreamResult(out)
+      xformer.transform(source, result)
+      resultsList+=XML.loadString(new String(out.toByteArray))
+    }
 
     // generate the output XML from searchResultsList
     var output =

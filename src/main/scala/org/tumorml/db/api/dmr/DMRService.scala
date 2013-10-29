@@ -33,27 +33,27 @@ class DMRService extends TumorMLDbStack {
   }
 
   get("/addEntry") {
-
+    // unimplemented in demonstrator
   }
 
   get("/addDataToEntry") {
-
+    // unimplemented in demonstrator
   }
 
   get("/addReferenceToEntry") {
-
+    // unimplemented in demonstrator
   }
 
   get("/updateEntry") {
-
+    // unimplemented in demonstrator
   }
 
   get("/updateData") {
-
+    // unimplemented in demonstrator
   }
 
   get("/updateReference") {
-
+    // unimplemented in demonstrator
   }
 
   get("/query") {
