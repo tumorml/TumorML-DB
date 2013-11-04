@@ -32,9 +32,11 @@ http://www.gnu.org/licenses/lgpl.html
     <xsl:template match="model">
         <h2>Model</h2>
         <xsl:apply-templates select="parameters"/>
+        <xsl:apply-templates select="implementation" />
     </xsl:template>
 
     <xsl:template match="parameters">
+        <div class="tftable">
         <table>
             <tr><td>Parameter</td><td>Identifier</td><td>Type</td><td>Optional?</td></tr>
             <xsl:for-each select="in">
@@ -44,6 +46,15 @@ http://www.gnu.org/licenses/lgpl.html
                 <tr><td>Output</td><td><xsl:value-of select="./@name" /></td><td><xsl:value-of select="value/@type" /></td><td><xsl:value-of select="./@optional" /></td></tr>
             </xsl:for-each>
         </table>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="implementation">
+        <h2>Implementation - <xsl:value-of select="./@id"/></h2>
+        <p>Title: <xsl:value-of select="./title"/></p>
+        <p>Date published: <xsl:value-of select="./date"/></p>
+        <p>OS: <xsl:value-of select="./requirements/operatingSystem"/>, CPU architecture: <xsl:value-of select="./requirements/CPUArchitecture"/>, Language: <xsl:value-of
+                select="./requirements/language"/></p>
     </xsl:template>
 
 </xsl:stylesheet>
