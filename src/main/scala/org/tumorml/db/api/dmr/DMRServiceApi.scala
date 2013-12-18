@@ -1,6 +1,6 @@
 package org.tumorml.db.api.dmr
 
-import org.tumorml.db.TumorMLDbStack
+import org.tumorml.db.WebStack
 
 /**
  * DMR Service servlet. Implements CViT/caBIG DMR API as documented in
@@ -26,7 +26,7 @@ import org.tumorml.db.TumorMLDbStack
  * under the License.
  */
 
-class DMRService extends TumorMLDbStack {
+class DMRServiceApi extends WebStack {
 
   before() {
     contentType = "application/xml"

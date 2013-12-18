@@ -1,12 +1,13 @@
--@ val title: String
--@ val headline: String = title
+-@ val title: String = "test title"
 -@ val body: String
+-@ val classes: String = "tftextresults"
 
-!!!
-html
+!!! Basic
+html(lang="en")
   head
-    title= title
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    meta(name="ROBOTS" content="NOINDEX, NOFOLLOW")
+    link(rel="stylesheet" type="text/css" href={uri("/css/style.css")})
+    title = title
   body
-    #content
-      h1= headline
-      != body
+    !~~ body

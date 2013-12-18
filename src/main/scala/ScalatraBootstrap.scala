@@ -1,7 +1,8 @@
 import org.tumorml.db._
 import org.scalatra._
 import javax.servlet.ServletContext
-import org.tumorml.db.api.TumorMLDataService
+import org.tumorml.db.api.DataServiceApi
+import org.tumorml.db.web.Search
 
 /**
  * Scalatra bootstrapper for servlets
@@ -28,7 +29,14 @@ import org.tumorml.db.api.TumorMLDataService
 
 class ScalatraBootstrap extends LifeCycle {
   override def init(context: ServletContext) {
-    context.mount(new TumorMLDataService, "/tumorml/api/*")
-    context.mount(new TumorMLDbServlet, "/tumorml/*")
+    Database.init
+    context.mount(new DataServiceApi, "/api/*")
+    context.mount(new Search, "/*")
   }
+
+  override def destroy(context: ServletContext) {
+    Database.shutdown
+    super.destroy(context)
+  }
+
 }

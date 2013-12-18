@@ -1,0 +1,24 @@
+-import scala.xml.Elem
+
+-@ val query: String = ""
+-@ val results: List[Elem]
+
+form(action="/" method="GET")
+  a(href="/")
+    img(src="/images/tumorml-logo-small.png" width="50" height="50")
+  input.tftextinput(type="text" name="q" value={query} query="query" onclick="this.value=''")
+  input.tfbutton(type="submit" value="Search terms")
+
+p
+  | You searched for
+  strong =query
+
+-if (results.size > 0)
+  ol
+    - for (result <- results.distinct)
+      li
+        =result
+
+-else
+  p No results.
+

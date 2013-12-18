@@ -1,9 +1,9 @@
 package org.tumorml.db.api
 
-import org.basex.client.api.BaseXClient
 import scala.collection.mutable.ListBuffer
 import scala.xml.{XML, Elem}
-import org.tumorml.db.TumorMLDbStack
+import org.tumorml.db.WebStack
+import org.tumorml.db.Database
 
 /**
  * TumorML DB API service servlet.
@@ -28,7 +28,7 @@ import org.tumorml.db.TumorMLDbStack
  * under the License.
  */
 
-class TumorMLDataService extends TumorMLDbStack {
+class DataServiceApi extends WebStack {
 
   before() {
     contentType="application/xml"
@@ -36,10 +36,9 @@ class TumorMLDataService extends TumorMLDbStack {
 
   // search across DB and return TumorML documents matching query
   get("/search/:query") {
-    val session = new BaseXClient("localhost", 1984, "admin", "admin")
     val queryDocsByTitle = "db:open('tumorml')//tumorml[./header/title contains text '" + params({"query"}) +
       "' using fuzzy]"
-    val docsByTitleResults = session.query(queryDocsByTitle)
+    val docsByTitleResults = Database.db.query(queryDocsByTitle)
     val docsByTitleResultsList = new ListBuffer[Elem]
     while (docsByTitleResults.more()) docsByTitleResultsList += XML.loadString(docsByTitleResults.next())
     docsByTitleResults.close()
@@ -51,9 +50,8 @@ class TumorMLDataService extends TumorMLDbStack {
 
   get("/download/:id") {
     // download single TumorML document identified by an ID
-    val session = new BaseXClient("localhost", 1984, "admin", "admin")
     val queryDocsByTitle = "db:open('tumorml')//tumorml[data(./@id) = '" + params({"id"}) + "']"
-    val docsByTitleResults = session.query(queryDocsByTitle)
+    val docsByTitleResults = Database.db.query(queryDocsByTitle)
     val docsByTitleResultsList = new ListBuffer[Elem]
     while (docsByTitleResults.more()) docsByTitleResultsList += XML.loadString(docsByTitleResults.next())
     docsByTitleResults.close()

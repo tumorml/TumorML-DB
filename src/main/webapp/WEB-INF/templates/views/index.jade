@@ -1,0 +1,8 @@
+-@ val query: String = "query"
+-@ val qval: String = ""
+
+div(align="center")
+  img(src="/images/tumorml-banner.png")
+  form(action="/" method="GET")
+    input.tftextinput(type="text" name="q" value={query} query="query" onclick="this.value=''")
+    input.tfbutton(type="submit" value="Search terms")
