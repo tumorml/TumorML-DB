@@ -58,9 +58,5 @@ class DataServiceApi extends WebStack {
     val output = {for (doc <- docsByTitleResultsList) yield doc} // should only be one document
     output
   }
-
-  get("/metrics") {
-    // get DB metrics
-  }
   
 }
